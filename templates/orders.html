@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment</title>
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style type="text/css">
+    .main_wrapper {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .main {
+        margin: 2em 0;
+        width: 100%;
+        transition: 0.5s ease-in-out all;
+    }
+
+    .main:hover {
+        transform: scale(1.2, 1.2);
+    }
+    .forgot{
+        padding: 0;
+    }
+    </style>
+</head>
+
+<body>
+    {% if request.user.is_authenticated %}<a class="logout_btn" href="{% url 'account:logout' %}"><i class="fas fa-power-off"></i> Logout</a>{% endif %}
+    <p class="sign" align="center">Your Orders {{ request.user.username }}!</p>
+    <p class="forgot" align="center"><a href="{% url 'core:index' %}">Book an Order</a></p>
+    <div class="main_wrapper">
+        {% for order in orders %}
+        <div class="main">
+            <p class="sign" align="center">{{ order.title }}</p>
+            <p align="center">To be completed by {{ order.deadline }}</p>
+            <div align="center">
+                {% for f in order.orderfile_set.all %}
+                <a href="{{ f.file.url }}" target="_blank">{{ f.filename }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+
+</html>
